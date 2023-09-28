@@ -8,6 +8,9 @@ class MyApp extends StatefulWidget {
   const MyApp({Key? key}) : super(key: key);
   static String depositBtn = 'Deposit';
   static String withdrawBtn = 'Withdraw';
+  static String showBtn = 'Show Details';
+  static int balance = 0;
+  static int currentIndex = 0;
 
   @override
   _MyAppState createState() => _MyAppState();
@@ -20,17 +23,42 @@ class _MyAppState extends State<MyApp> {
       debugShowCheckedModeBanner: false,
       home: Scaffold(
         appBar: AppBar(
-          backgroundColor: Color(0xFF800000),
+          backgroundColor: Colors.lightBlue,
           title: const Text('PMCB'),
         ),
         body: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              Container(
+                margin: const EdgeInsets.only(bottom: 70),
+                child: Column(
+                  children: [
+                    const Text('Current Balance:',
+                        style: TextStyle(fontSize: 15)),
+                    Text(MyApp.balance.toString(),
+                        style: const TextStyle(fontSize: 30)),
+                    Container(
+                      margin: const EdgeInsets.only(top: 30),
+                      child: ElevatedButton(
+                        style: ButtonStyle(
+                          backgroundColor:
+                              const MaterialStatePropertyAll<Color>(
+                                  Colors.lightBlueAccent),
+                        ),
+                        onPressed: () {
+                          showClicked();
+                        },
+                        child: Text(MyApp.showBtn.toString()),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
               ElevatedButton(
                 style: ButtonStyle(
-                  padding:
-                      MaterialStateProperty.all<EdgeInsets>(EdgeInsets.all(20)),
+                  padding: MaterialStateProperty.all<EdgeInsets>(
+                      const EdgeInsets.symmetric(horizontal: 30, vertical: 15)),
                   backgroundColor:
                       const MaterialStatePropertyAll<Color>(Colors.amber),
                 ),
@@ -50,9 +78,10 @@ class _MyAppState extends State<MyApp> {
                   },
                   style: ButtonStyle(
                     padding: MaterialStateProperty.all<EdgeInsets>(
-                        EdgeInsets.all(20)),
+                        const EdgeInsets.symmetric(
+                            horizontal: 21.5, vertical: 15)),
                     backgroundColor:
-                        const MaterialStatePropertyAll<Color>(Colors.amber),
+                        const MaterialStatePropertyAll<Color>(Colors.orange),
                   ),
                   child: Text(MyApp.withdrawBtn,
                       style: TextStyle(
@@ -78,6 +107,12 @@ class _MyAppState extends State<MyApp> {
               icon: Icon(Icons.settings),
             ),
           ],
+          currentIndex: MyApp.currentIndex,
+          onTap: (int index) {
+            setState(() {
+              MyApp.currentIndex = index;
+            });
+          },
         ),
       ),
     );
@@ -95,5 +130,9 @@ class _MyAppState extends State<MyApp> {
     });
   }
 
-  btnStyleDashboard() {}
+  showClicked() {
+    setState(() {
+      MyApp.showBtn = 'Showing...';
+    });
+  }
 }
