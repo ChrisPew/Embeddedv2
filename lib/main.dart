@@ -27,71 +27,96 @@ class _MyAppState extends State<MyApp> {
           title: const Text('PMCB'),
         ),
         body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Container(
-                margin: const EdgeInsets.only(bottom: 70),
-                child: Column(
-                  children: [
-                    const Text('Current Balance:',
-                        style: TextStyle(fontSize: 15)),
-                    Text(MyApp.balance.toString(),
-                        style: const TextStyle(fontSize: 30)),
-                    Container(
-                      margin: const EdgeInsets.only(top: 30),
-                      child: ElevatedButton(
+            child: MyApp.currentIndex == 0
+                ? Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Container(
+                        margin: const EdgeInsets.only(bottom: 70),
+                        child: Column(
+                          children: [
+                            const Text('Current Balance:',
+                                style: TextStyle(fontSize: 15)),
+                            Text(MyApp.balance.toString(),
+                                style: const TextStyle(fontSize: 30)),
+                            Container(
+                              margin: const EdgeInsets.only(top: 30),
+                              //SHOW DETAILS BUTTON
+                              child: ElevatedButton(
+                                style: ButtonStyle(
+                                  backgroundColor:
+                                      const MaterialStatePropertyAll<Color>(
+                                          Colors.lightBlueAccent),
+                                ),
+                                onPressed: () {
+                                  showClicked();
+                                },
+                                child: Text(MyApp.showBtn.toString()),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      //DEPOSIT BUTTON
+                      ElevatedButton(
                         style: ButtonStyle(
+                          padding: MaterialStateProperty.all<EdgeInsets>(
+                              const EdgeInsets.symmetric(
+                                  horizontal: 30, vertical: 15)),
                           backgroundColor:
                               const MaterialStatePropertyAll<Color>(
-                                  Colors.lightBlueAccent),
+                                  Colors.amber),
                         ),
                         onPressed: () {
-                          showClicked();
+                          depositClicked();
                         },
-                        child: Text(MyApp.showBtn.toString()),
+                        child: Text(MyApp.depositBtn,
+                            style: TextStyle(
+                              fontSize: 20,
+                            )),
                       ),
-                    ),
-                  ],
-                ),
-              ),
-              ElevatedButton(
-                style: ButtonStyle(
-                  padding: MaterialStateProperty.all<EdgeInsets>(
-                      const EdgeInsets.symmetric(horizontal: 30, vertical: 15)),
-                  backgroundColor:
-                      const MaterialStatePropertyAll<Color>(Colors.amber),
-                ),
-                onPressed: () {
-                  depositClicked();
-                },
-                child: Text(MyApp.depositBtn,
-                    style: TextStyle(
-                      fontSize: 20,
-                    )),
-              ),
-              Container(
-                margin: const EdgeInsets.only(top: 12.0),
-                child: ElevatedButton(
-                  onPressed: () {
-                    withdrawClicked();
-                  },
-                  style: ButtonStyle(
-                    padding: MaterialStateProperty.all<EdgeInsets>(
-                        const EdgeInsets.symmetric(
-                            horizontal: 21.5, vertical: 15)),
-                    backgroundColor:
-                        const MaterialStatePropertyAll<Color>(Colors.orange),
-                  ),
-                  child: Text(MyApp.withdrawBtn,
-                      style: TextStyle(
-                        fontSize: 20,
-                      )),
-                ),
-              ),
-            ],
-          ),
-        ),
+                      //WITHDRAW BUTTON
+                      Container(
+                        margin: const EdgeInsets.only(top: 12.0),
+                        child: ElevatedButton(
+                          onPressed: () {
+                            withdrawClicked();
+                          },
+                          style: ButtonStyle(
+                            padding: MaterialStateProperty.all<EdgeInsets>(
+                                const EdgeInsets.symmetric(
+                                    horizontal: 21.5, vertical: 15)),
+                            backgroundColor:
+                                const MaterialStatePropertyAll<Color>(
+                                    Colors.orange),
+                          ),
+                          child: Text(MyApp.withdrawBtn,
+                              style: TextStyle(
+                                fontSize: 20,
+                              )),
+                        ),
+                      ),
+                    ],
+                  )
+                : MyApp.currentIndex == 1
+                    ? Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Container(
+                            child: const Text('Transactions History'),
+                          )
+                        ],
+                      )
+                    : MyApp.currentIndex == 2
+                        ? Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Container(
+                                child: const Text('Settings'),
+                              )
+                            ],
+                          )
+                        : SizedBox()),
         bottomNavigationBar: BottomNavigationBar(
           items: const [
             BottomNavigationBarItem(
@@ -134,5 +159,15 @@ class _MyAppState extends State<MyApp> {
     setState(() {
       MyApp.showBtn = 'Showing...';
     });
+  }
+}
+
+//ABOUT US
+class SecondPage extends StatelessWidget {
+  const SecondPage({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return const Placeholder();
   }
 }
