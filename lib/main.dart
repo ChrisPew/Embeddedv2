@@ -41,15 +41,15 @@ class _MyAppState extends State<MyApp> {
                                 style: const TextStyle(fontSize: 30)),
                             Container(
                               margin: const EdgeInsets.only(top: 30),
-                              //SHOW DETAILS BUTTON
+                              //---------------------------------------------------------------SHOW DETAILS BUTTON
                               child: ElevatedButton(
-                                style: ButtonStyle(
+                                style: const ButtonStyle(
                                   backgroundColor:
-                                      const MaterialStatePropertyAll<Color>(
+                                      MaterialStatePropertyAll<Color>(
                                           Colors.lightBlueAccent),
                                 ),
                                 onPressed: () {
-                                  showClicked();
+                                  showClicked(context);
                                 },
                                 child: Text(MyApp.showBtn.toString()),
                               ),
@@ -57,7 +57,7 @@ class _MyAppState extends State<MyApp> {
                           ],
                         ),
                       ),
-                      //DEPOSIT BUTTON
+                      //-----------------------------------------------------------------------DEPOSIT BUTTON
                       ElevatedButton(
                         style: ButtonStyle(
                           padding: MaterialStateProperty.all<EdgeInsets>(
@@ -75,7 +75,7 @@ class _MyAppState extends State<MyApp> {
                               fontSize: 20,
                             )),
                       ),
-                      //WITHDRAW BUTTON
+                      //----------------------------------------------------------------------WITHDRAW BUTTON
                       Container(
                         margin: const EdgeInsets.only(top: 12.0),
                         child: ElevatedButton(
@@ -155,7 +155,14 @@ class _MyAppState extends State<MyApp> {
     });
   }
 
-  showClicked() {
+  showClicked(BuildContext context) {
+    showDialog(
+        context: context,
+        builder: (context) => const AlertDialog(
+              title: Text("Test"),
+              content: Text("Done..!"),
+            ));
+
     setState(() {
       MyApp.showBtn = 'Showing...';
     });
