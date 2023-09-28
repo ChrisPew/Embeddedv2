@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pmcb/withdraw.dart';
 
 void main() {
   runApp(const MyApp());
@@ -43,13 +44,17 @@ class _MyAppState extends State<MyApp> {
                               margin: const EdgeInsets.only(top: 30),
                               //---------------------------------------------------------------SHOW DETAILS BUTTON
                               child: ElevatedButton(
-                                style: const ButtonStyle(
+                                style: ButtonStyle(
                                   backgroundColor:
-                                      MaterialStatePropertyAll<Color>(
+                                      const MaterialStatePropertyAll<Color>(
                                           Colors.lightBlueAccent),
                                 ),
                                 onPressed: () {
-                                  showClicked(context);
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              WithdrawPage()));
                                 },
                                 child: Text(MyApp.showBtn.toString()),
                               ),
@@ -153,28 +158,5 @@ class _MyAppState extends State<MyApp> {
     setState(() {
       MyApp.withdrawBtn = 'Withdrawing...';
     });
-  }
-
-  showClicked(BuildContext context) {
-    showDialog(
-        context: context,
-        builder: (context) => const AlertDialog(
-              title: Text("Test"),
-              content: Text("Done..!"),
-            ));
-
-    setState(() {
-      MyApp.showBtn = 'Showing...';
-    });
-  }
-}
-
-//ABOUT US
-class SecondPage extends StatelessWidget {
-  const SecondPage({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return const Placeholder();
   }
 }
