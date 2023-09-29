@@ -2,22 +2,32 @@ import 'package:flutter/material.dart';
 import 'package:pmcb/withdraw.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(
+    const MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatefulWidget {
   const MyApp({Key? key}) : super(key: key);
+
   static String depositBtn = 'Deposit';
   static String withdrawBtn = 'Withdraw';
   static String showBtn = 'Show Details';
   static int balance = 0;
   static int currentIndex = 0;
 
+  Widget build(BuildContext context) {
+    return MaterialApp(home: _MyHome().widget);
+  }
+
   @override
-  _MyAppState createState() => _MyAppState();
+  State<MyApp> createState() => _MyHome();
 }
 
-class _MyAppState extends State<MyApp> {
+class _MyHome extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -54,7 +64,7 @@ class _MyAppState extends State<MyApp> {
                                       context,
                                       MaterialPageRoute(
                                           builder: (context) =>
-                                              WithdrawPage()));
+                                              const WithdrawPage()));
                                 },
                                 child: Text(MyApp.showBtn.toString()),
                               ),
@@ -158,5 +168,26 @@ class _MyAppState extends State<MyApp> {
     setState(() {
       MyApp.withdrawBtn = 'Withdrawing...';
     });
+  }
+}
+
+class SecondRoute extends StatelessWidget {
+  const SecondRoute({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Second Route'),
+      ),
+      body: Center(
+        child: ElevatedButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          child: const Text('Go back!'),
+        ),
+      ),
+    );
   }
 }
