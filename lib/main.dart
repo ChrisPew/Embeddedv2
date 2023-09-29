@@ -59,13 +59,7 @@ class _MyHome extends State<MyApp> {
                                       const MaterialStatePropertyAll<Color>(
                                           Colors.lightBlueAccent),
                                 ),
-                                onPressed: () {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                              const WithdrawPage()));
-                                },
+                                onPressed: () {},
                                 child: Text(MyApp.showBtn.toString()),
                               ),
                             ),
@@ -95,7 +89,11 @@ class _MyHome extends State<MyApp> {
                         margin: const EdgeInsets.only(top: 12.0),
                         child: ElevatedButton(
                           onPressed: () {
-                            withdrawClicked();
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        const WithdrawPage()));
                           },
                           style: ButtonStyle(
                             padding: MaterialStateProperty.all<EdgeInsets>(

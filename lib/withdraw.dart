@@ -31,7 +31,7 @@ class _WithdrawPageState extends State<WithdrawPage> {
               const Text('Withdraw Amount:'),
               TextField(
                 keyboardType: TextInputType.number,
-                controller: myController, //
+                controller: myController,
                 decoration: const InputDecoration(
                   border: UnderlineInputBorder(),
                   labelText: 'Enter an integer amount',
