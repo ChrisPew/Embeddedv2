@@ -9,6 +9,7 @@ class WithdrawPage extends StatefulWidget {
 
 class _WithdrawPageState extends State<WithdrawPage> {
   final myController = TextEditingController(); // Define the text controller
+  // static int withdrawAmt=int.parse(myController.text);
 
   @override
   void dispose() {
@@ -27,32 +28,44 @@ class _WithdrawPageState extends State<WithdrawPage> {
         ),
         body: Center(
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               const Text('Withdraw Amount:'),
-              TextField(
-                keyboardType: TextInputType.number,
-                controller: myController,
-                decoration: const InputDecoration(
-                  border: UnderlineInputBorder(),
-                  labelText: 'Enter an integer amount',
+              Container(
+                margin: const EdgeInsets.all(30),
+                child: TextField(
+                  keyboardType: TextInputType.number,
+                  controller: myController,
+                  decoration: const InputDecoration(
+                    border: UnderlineInputBorder(),
+                    labelText: 'Enter an integer amount',
+                  ),
                 ),
               ),
+              Container(
+                margin: const EdgeInsets.only(bottom: 15),
+                child: ElevatedButton(
+                    // When the user presses the button, show an alert dialog containing
+                    // the text that the user has entered into the text field.
+                    onPressed: () {
+                      showDialog(
+                        context: context,
+                        builder: (context) {
+                          return AlertDialog(
+                            // Retrieve the text the that user has entered by using the
+                            // TextEditingController.
+                            content: Text(myController.text),
+                          );
+                        },
+                      );
+                    },
+                    child: const Text('Enter')),
+              ),
               ElevatedButton(
-                  // When the user presses the button, show an alert dialog containing
-                  // the text that the user has entered into the text field.
-                  onPressed: () {
-                    showDialog(
-                      context: context,
-                      builder: (context) {
-                        return AlertDialog(
-                          // Retrieve the text the that user has entered by using the
-                          // TextEditingController.
-                          content: Text(myController.text),
-                        );
+                  onPressed: () => {
+                        // Navigator.push(context, )
                       },
-                    );
-                  },
-                  child: const Text('Enter')),
+                  child: const Text('Back')),
             ],
           ),
         ),
