@@ -23,7 +23,7 @@ class _WithdrawPageState extends State<WithdrawPage> {
       debugShowCheckedModeBanner: false,
       home: Scaffold(
         appBar: AppBar(
-          backgroundColor: Colors.lightBlue,
+          backgroundColor: Colors.red,
           title: const Text('PMCB'),
         ),
         body: Center(
@@ -59,12 +59,18 @@ class _WithdrawPageState extends State<WithdrawPage> {
                         },
                       );
                     },
+                    style: const ButtonStyle(
+                      backgroundColor:
+                          MaterialStatePropertyAll<Color>(Colors.orange),
+                    ),
                     child: const Text('Enter')),
               ),
               ElevatedButton(
-                  onPressed: () => {
-                        // Navigator.push(context, )
-                      },
+                  onPressed: () => {Navigator.of(context).pop()},
+                  style: ButtonStyle(
+                    backgroundColor:
+                        MaterialStatePropertyAll<Color>(Colors.orange.shade900),
+                  ),
                   child: const Text('Back')),
             ],
           ),

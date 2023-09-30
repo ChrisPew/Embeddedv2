@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pmcb/withdraw.dart';
+import 'package:pmcb/deposit.dart';
+import 'package:pmcb/help.dart';
 
 void main() {
   runApp(
@@ -16,8 +18,13 @@ class MyApp extends StatefulWidget {
   static String depositBtn = 'Deposit';
   static String withdrawBtn = 'Withdraw';
   static String showBtn = 'Show Details';
-  static int balance = 0;
   static int currentIndex = 0;
+  static int onePeso = 4;
+  static int fivePeso = 3;
+  static int tenPeso = 2;
+  static int twentyPeso = 1;
+  static int balance = onePeso + fivePeso + tenPeso + twentyPeso;
+  static bool depositing = false;
 
   Widget build(BuildContext context) {
     return MaterialApp(home: _MyHome().widget);
@@ -34,7 +41,7 @@ class _MyHome extends State<MyApp> {
       debugShowCheckedModeBanner: false,
       home: Scaffold(
         appBar: AppBar(
-          backgroundColor: Colors.lightBlue,
+          backgroundColor: Colors.red,
           title: const Text('PMCB'),
         ),
         body: Center(
@@ -56,10 +63,42 @@ class _MyHome extends State<MyApp> {
                               child: ElevatedButton(
                                 style: ButtonStyle(
                                   backgroundColor:
-                                      const MaterialStatePropertyAll<Color>(
-                                          Colors.lightBlueAccent),
+                                      MaterialStatePropertyAll<Color>(
+                                          Colors.red.shade600),
                                 ),
-                                onPressed: () {},
+                                onPressed: () {
+                                  showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return AlertDialog(
+                                        title: const Text('Details'),
+                                        content: Text(
+                                          '1 peso coin: ' +
+                                              MyApp.onePeso.toString() +
+                                              '\n5 peso coin: ' +
+                                              MyApp.fivePeso.toString() +
+                                              '\n10 peso coin: ' +
+                                              MyApp.tenPeso.toString() +
+                                              '\n20 peso coin: ' +
+                                              MyApp.twentyPeso.toString(),
+                                        ),
+                                        actions: <Widget>[
+                                          TextButton(
+                                            style: TextButton.styleFrom(
+                                              textStyle: Theme.of(context)
+                                                  .textTheme
+                                                  .labelLarge,
+                                            ),
+                                            child: const Text('OK'),
+                                            onPressed: () {
+                                              Navigator.of(context).pop();
+                                            },
+                                          ),
+                                        ],
+                                      );
+                                    },
+                                  );
+                                },
                                 child: Text(MyApp.showBtn.toString()),
                               ),
                             ),
@@ -77,7 +116,12 @@ class _MyHome extends State<MyApp> {
                                   Colors.amber),
                         ),
                         onPressed: () {
-                          depositClicked();
+                          setState(() {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => const DepositPage()));
+                          });
                         },
                         child: Text(MyApp.depositBtn,
                             style: TextStyle(
@@ -121,16 +165,10 @@ class _MyHome extends State<MyApp> {
                         ],
                       )
                     : MyApp.currentIndex == 2
-                        ? Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Container(
-                                child: const Text('Settings'),
-                              )
-                            ],
-                          )
-                        : SizedBox()),
+                        ? const HelpPage()
+                        : const SizedBox()),
         bottomNavigationBar: BottomNavigationBar(
+          selectedItemColor: Colors.red,
           items: const [
             BottomNavigationBarItem(
               label: 'Dashboard',
@@ -141,8 +179,8 @@ class _MyHome extends State<MyApp> {
               icon: Icon(Icons.history),
             ),
             BottomNavigationBarItem(
-              label: 'Settings',
-              icon: Icon(Icons.settings),
+              label: 'Help',
+              icon: Icon(Icons.help),
             ),
           ],
           currentIndex: MyApp.currentIndex,
@@ -151,39 +189,6 @@ class _MyHome extends State<MyApp> {
               MyApp.currentIndex = index;
             });
           },
-        ),
-      ),
-    );
-  }
-
-  depositClicked() {
-    setState(() {
-      MyApp.depositBtn = 'Depositing...';
-    });
-  }
-
-  withdrawClicked() {
-    setState(() {
-      MyApp.withdrawBtn = 'Withdrawing...';
-    });
-  }
-}
-
-class SecondRoute extends StatelessWidget {
-  const SecondRoute({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Second Route'),
-      ),
-      body: Center(
-        child: ElevatedButton(
-          onPressed: () {
-            Navigator.pop(context);
-          },
-          child: const Text('Go back!'),
         ),
       ),
     );
