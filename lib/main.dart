@@ -53,6 +53,18 @@ class _MyHome extends State<MyApp> {
                         margin: const EdgeInsets.only(bottom: 70),
                         child: Column(
                           children: [
+                            //-----------------------------------------------CONNECT DEVICE BTN
+                            Container(
+                              margin: const EdgeInsets.only(bottom: 100),
+                              child: ElevatedButton(
+                                  style: const ButtonStyle(
+                                    backgroundColor:
+                                        MaterialStatePropertyAll<Color>(
+                                            Color(0x1f474747)),
+                                  ),
+                                  onPressed: () {},
+                                  child: const Text('Connect Device')),
+                            ),
                             const Text('Current Balance:',
                                 style: TextStyle(fontSize: 15)),
                             Text(MyApp.balance.toString(),
@@ -123,7 +135,7 @@ class _MyHome extends State<MyApp> {
                                     builder: (context) => const DepositPage()));
                           });
                         },
-                        child: Text(MyApp.depositBtn,
+                        child: const Text('Deposit',
                             style: TextStyle(
                               fontSize: 20,
                             )),
@@ -147,7 +159,7 @@ class _MyHome extends State<MyApp> {
                                 const MaterialStatePropertyAll<Color>(
                                     Colors.orange),
                           ),
-                          child: Text(MyApp.withdrawBtn,
+                          child: const Text('Withdraw',
                               style: TextStyle(
                                 fontSize: 20,
                               )),
