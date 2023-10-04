@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:pmcb/withdraw.dart';
 import 'package:pmcb/deposit.dart';
 import 'package:pmcb/help.dart';
+import 'package:pmcb/history.dart';
 
 void main() {
   runApp(
@@ -168,14 +169,7 @@ class _MyHome extends State<MyApp> {
                     ],
                   )
                 : MyApp.currentIndex == 1
-                    ? Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Container(
-                            child: const Text('Transactions History'),
-                          )
-                        ],
-                      )
+                    ? HistoryPage()
                     : MyApp.currentIndex == 2
                         ? const HelpPage()
                         : const SizedBox()),
