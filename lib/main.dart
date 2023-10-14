@@ -3,6 +3,7 @@ import 'package:pmcb/withdraw.dart';
 import 'package:pmcb/deposit.dart';
 import 'package:pmcb/help.dart';
 import 'package:pmcb/history.dart';
+import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
 
 void main() {
   runApp(
@@ -28,7 +29,28 @@ class MyApp extends StatefulWidget {
   static bool depositing = false;
 
   Widget build(BuildContext context) {
-    return MaterialApp(home: _MyHome().widget);
+    return FutureBuilder(
+        future: FlutterBluetoothSerial.instance.requestEnable(),
+        builder: (context, future) {
+          if (future.connectionState == ConnectionState.waiting) {
+            return Scaffold(
+              body: Container(
+                height: double.infinity,
+                child: Center(
+                  child: Icon(
+                    Icons.bluetooth_disabled,
+                    size: 200.0,
+                    color: Colors.blue,
+                  ),
+                ),
+              ),
+            );
+          } else if (future.connectionState == ConnectionState.done) {
+            return MaterialApp(home: _MyHome().widget);
+          } else {
+            return MaterialApp(home: _MyHome().widget);
+          }
+        });
   }
 
   @override
