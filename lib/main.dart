@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:pmcb/withdraw.dart';
-import 'package:pmcb/deposit.dart';
-import 'package:pmcb/help.dart';
-import 'package:pmcb/history.dart';
+import './withdraw.dart';
+import './deposit.dart';
+import './help.dart';
+import './history.dart';
+import './DiscoveryPage.dart';
 import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
 
 void main() {
@@ -29,28 +30,7 @@ class MyApp extends StatefulWidget {
   static bool depositing = false;
 
   Widget build(BuildContext context) {
-    return FutureBuilder(
-        future: FlutterBluetoothSerial.instance.requestEnable(),
-        builder: (context, future) {
-          if (future.connectionState == ConnectionState.waiting) {
-            return Scaffold(
-              body: Container(
-                height: double.infinity,
-                child: Center(
-                  child: Icon(
-                    Icons.bluetooth_disabled,
-                    size: 200.0,
-                    color: Colors.blue,
-                  ),
-                ),
-              ),
-            );
-          } else if (future.connectionState == ConnectionState.done) {
-            return MaterialApp(home: _MyHome().widget);
-          } else {
-            return MaterialApp(home: _MyHome().widget);
-          }
-        });
+    return MaterialApp(home: _MyHome().widget);
   }
 
   @override
@@ -58,6 +38,7 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyHome extends State<MyApp> {
+// class MyHome extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -65,7 +46,8 @@ class _MyHome extends State<MyApp> {
       home: Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.red,
-          title: const Text('PMCB'),
+          title: const Text('PMCB',
+              style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold)),
         ),
         body: Center(
             child: MyApp.currentIndex == 0
@@ -74,20 +56,34 @@ class _MyHome extends State<MyApp> {
                     children: [
                       Container(
                         margin: const EdgeInsets.only(bottom: 70),
+                        child: ElevatedButton(
+                            style: ButtonStyle(
+                              backgroundColor: MaterialStatePropertyAll<Color>(
+                                  Colors.black38),
+                            ),
+                            child: const Text('Explore discovered devices'),
+                            onPressed: () async {
+                              final BluetoothDevice? selectedDevice =
+                                  await Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder: (context) {
+                                    return DiscoveryPage();
+                                  },
+                                ),
+                              );
+
+                              if (selectedDevice != null) {
+                                print('Discovery -> selected ' +
+                                    selectedDevice.address);
+                              } else {
+                                print('Discovery -> no device selected');
+                              }
+                            }),
+                      ),
+                      Container(
+                        margin: const EdgeInsets.only(bottom: 70),
                         child: Column(
                           children: [
-                            //-----------------------------------------------CONNECT DEVICE BTN
-                            Container(
-                              margin: const EdgeInsets.only(bottom: 100),
-                              child: ElevatedButton(
-                                  style: const ButtonStyle(
-                                    backgroundColor:
-                                        MaterialStatePropertyAll<Color>(
-                                            Color(0x1f474747)),
-                                  ),
-                                  onPressed: () {},
-                                  child: const Text('Connect Device')),
-                            ),
                             const Text('Current Balance:',
                                 style: TextStyle(fontSize: 15)),
                             Text(MyApp.balance.toString(),
