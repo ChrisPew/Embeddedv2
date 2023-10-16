@@ -4,6 +4,8 @@ import './deposit.dart';
 import './help.dart';
 import './history.dart';
 import './DiscoveryPage.dart';
+import './SelectBondedDevicePage.dart';
+import './ChatPage.dart';
 import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
 
 void main() {
@@ -55,12 +57,8 @@ class _MyHome extends State<MyApp> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Container(
-                        margin: const EdgeInsets.only(bottom: 70),
+                        margin: const EdgeInsets.only(bottom: 10),
                         child: ElevatedButton(
-                            style: ButtonStyle(
-                              backgroundColor: MaterialStatePropertyAll<Color>(
-                                  Colors.black38),
-                            ),
                             child: const Text('Explore discovered devices'),
                             onPressed: () async {
                               final BluetoothDevice? selectedDevice =
@@ -80,6 +78,32 @@ class _MyHome extends State<MyApp> {
                               }
                             }),
                       ),
+                      Container(
+                        margin: const EdgeInsets.only(bottom: 70),
+                        child: ElevatedButton(
+                          child: const Text('Connect to paired device to chat'),
+                          onPressed: () async {
+                            final BluetoothDevice? selectedDevice =
+                                await Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (context) {
+                                  return SelectBondedDevicePage(
+                                      checkAvailability: false);
+                                },
+                              ),
+                            );
+
+                            if (selectedDevice != null) {
+                              print('Connect -> selected ' +
+                                  selectedDevice.address);
+                              _startChat(context, selectedDevice);
+                            } else {
+                              print('Connect -> no device selected');
+                            }
+                          },
+                        ),
+                      ),
+
                       Container(
                         margin: const EdgeInsets.only(bottom: 70),
                         child: Column(
@@ -217,4 +241,14 @@ class _MyHome extends State<MyApp> {
       ),
     );
   }
+}
+
+void _startChat(BuildContext context, BluetoothDevice server) {
+  Navigator.of(context).push(
+    MaterialPageRoute(
+      builder: (context) {
+        return ChatPage(server: server);
+      },
+    ),
+  );
 }
