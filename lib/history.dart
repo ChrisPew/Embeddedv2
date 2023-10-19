@@ -8,7 +8,7 @@ class HistoryPage extends StatefulWidget {
 }
 
 class _HistoryPageState extends State<HistoryPage> {
-  final List<String> entries = <String>['3', '4', '1', '7', '8', '4', '5'];
+  final List<String> entries = <String>['1', '5', '1', '5', '10', '20', '5'];
   @override
   Widget build(BuildContext context) {
     return Column(children: [
@@ -44,7 +44,7 @@ class _HistoryPageState extends State<HistoryPage> {
         itemCount: entries.length,
         itemBuilder: (BuildContext context, int index) {
           return Container(
-            height: 40,
+            height: 30,
             child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
