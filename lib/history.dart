@@ -8,63 +8,54 @@ class HistoryPage extends StatefulWidget {
 }
 
 class _HistoryPageState extends State<HistoryPage> {
+  final List<String> entries = <String>['3', '4', '1', '7', '8', '4', '5'];
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Container(
-          margin: const EdgeInsets.only(top: 30),
-          child: Column(mainAxisAlignment: MainAxisAlignment.start, children: [
-            const Text('Transaction History',
-                style: TextStyle(
-                  fontSize: 25,
-                  fontWeight: FontWeight.bold,
-                )),
-            Container(
-                margin: const EdgeInsets.only(top: 25, left: 20, right: 20),
-                padding: const EdgeInsets.only(top: 20, bottom: 20),
-                decoration: BoxDecoration(
-                  color: Colors.amber.shade200,
-                  borderRadius: const BorderRadius.all(Radius.circular(20)),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black12, //New
-                      blurRadius: 5.0,
-                      offset: Offset(
-                        5,
-                        5,
-                      ),
-                    )
-                  ],
-                ),
-                child: Container(
-                    child: Column(
-                  children: [
-                    Container(
-                      margin: const EdgeInsets.only(bottom: 20),
-                      child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            Container(
-                                child: Text('Amount',
-                                    style: TextStyle(
-                                      fontSize: 15,
-                                    ))),
-                            Container(
-                                child: Text('Date',
-                                    style: TextStyle(
-                                      fontSize: 15,
-                                    ))),
-                          ]),
-                    ),
-                    Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          Text('30', style: TextStyle(fontSize: 20)),
-                          Text('10/04/23', style: TextStyle(fontSize: 20))
-                        ]),
-                  ],
-                )))
-          ])),
-    );
+    return Column(children: [
+      Container(
+        margin: const EdgeInsets.only(top: 30, bottom: 10),
+        child: const Text('Transaction History',
+            style: TextStyle(
+              fontSize: 25,
+              fontWeight: FontWeight.bold,
+            )),
+      ),
+      const Divider(
+        height: 30,
+      ),
+      Container(
+        padding: const EdgeInsets.only(left: 30, right: 30),
+        child: const Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              Text('Amount',
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15)),
+              VerticalDivider(),
+              const Text('Date',
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15)),
+            ]),
+      ),
+      const Divider(
+        height: 30,
+      ),
+      Expanded(
+          child: ListView.separated(
+        padding: const EdgeInsets.only(left: 30, right: 30),
+        itemCount: entries.length,
+        itemBuilder: (BuildContext context, int index) {
+          return Container(
+            height: 40,
+            child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Text('₱ ${entries[index]}', style: TextStyle(fontSize: 20)),
+                  const VerticalDivider(),
+                  Text('Date', style: TextStyle(fontSize: 15)),
+                ]),
+          );
+        },
+        separatorBuilder: (BuildContext context, int index) => const Divider(),
+      ))
+    ]);
   }
 }

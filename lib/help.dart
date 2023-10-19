@@ -1,4 +1,9 @@
 import 'package:flutter/material.dart';
+import './DiscoveryPage.dart';
+import './SelectBondedDevicePage.dart';
+import './ChatPage.dart';
+import './ConnectedDevices.dart';
+import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
 
 class HelpPage extends StatefulWidget {
   const HelpPage({Key? key}) : super(key: key);
@@ -14,13 +19,25 @@ class _HelpPageState extends State<HelpPage> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          // Container(
-          //     margin: const EdgeInsets.only(bottom: 30),
-          //     child:
-          //      const Text(
-          //       'Help',
-          //       style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
-          //     )),
+          Container(
+            margin: const EdgeInsets.only(bottom: 20),
+            child: ElevatedButton(
+              style: ButtonStyle(
+                padding: MaterialStateProperty.all<EdgeInsets>(
+                    const EdgeInsets.symmetric(horizontal: 30, vertical: 17)),
+                backgroundColor: MaterialStatePropertyAll<Color>(Colors.blue),
+              ),
+              onPressed: () {
+                setState(() {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => SelectBondedDevicePage()));
+                });
+              },
+              child: Text('Connect to Device'),
+            ),
+          ),
           ElevatedButton(
               style: ButtonStyle(
                 padding: MaterialStateProperty.all<EdgeInsets>(
@@ -60,18 +77,20 @@ class _HelpPageState extends State<HelpPage> {
           Container(
             margin: const EdgeInsets.only(top: 50),
             padding: const EdgeInsets.all(30),
+            width: 330,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(24.0),
-              color: Colors.amber.shade200,
+              color: Colors.amber.shade100,
             ),
-            child: const Column(
+            child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text('Contact Us\n',
-                    style: TextStyle(
-                        decoration: TextDecoration.underline,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 20)),
+                Text('Contact Us',
+                    style:
+                        TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
+                Divider(
+                  height: 40,
+                ),
                 Text(
                   'Email: christopherespenida@gmail.com\n\nPhone: 09274478615',
                   style: TextStyle(fontStyle: FontStyle.italic),

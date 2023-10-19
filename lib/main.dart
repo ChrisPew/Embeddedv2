@@ -57,54 +57,6 @@ class _MyHome extends State<MyApp> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Container(
-                        margin: const EdgeInsets.only(bottom: 10),
-                        child: ElevatedButton(
-                            child: const Text('Explore discovered devices'),
-                            onPressed: () async {
-                              final BluetoothDevice? selectedDevice =
-                                  await Navigator.of(context).push(
-                                MaterialPageRoute(
-                                  builder: (context) {
-                                    return DiscoveryPage();
-                                  },
-                                ),
-                              );
-
-                              if (selectedDevice != null) {
-                                print('Discovery -> selected ' +
-                                    selectedDevice.address);
-                              } else {
-                                print('Discovery -> no device selected');
-                              }
-                            }),
-                      ),
-                      Container(
-                        margin: const EdgeInsets.only(bottom: 70),
-                        child: ElevatedButton(
-                          child: const Text('Connect to paired device to chat'),
-                          onPressed: () async {
-                            final BluetoothDevice? selectedDevice =
-                                await Navigator.of(context).push(
-                              MaterialPageRoute(
-                                builder: (context) {
-                                  return SelectBondedDevicePage(
-                                      checkAvailability: false);
-                                },
-                              ),
-                            );
-
-                            if (selectedDevice != null) {
-                              print('Connect -> selected ' +
-                                  selectedDevice.address);
-                              _startChat(context, selectedDevice);
-                            } else {
-                              print('Connect -> no device selected');
-                            }
-                          },
-                        ),
-                      ),
-
-                      Container(
                         margin: const EdgeInsets.only(bottom: 70),
                         child: Column(
                           children: [
