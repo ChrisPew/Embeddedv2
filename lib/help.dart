@@ -25,7 +25,8 @@ class _HelpPageState extends State<HelpPage> {
               style: ButtonStyle(
                 padding: MaterialStateProperty.all<EdgeInsets>(
                     const EdgeInsets.symmetric(horizontal: 30, vertical: 17)),
-                backgroundColor: MaterialStatePropertyAll<Color>(Colors.blue),
+                backgroundColor:
+                    const MaterialStatePropertyAll<Color>(Colors.blue),
               ),
               onPressed: () {
                 setState(() {
@@ -35,7 +36,7 @@ class _HelpPageState extends State<HelpPage> {
                           builder: (context) => SelectBondedDevicePage()));
                 });
               },
-              child: Text('Connect to Device'),
+              child: const Text('Connect to Device'),
             ),
           ),
           ElevatedButton(
@@ -54,7 +55,7 @@ class _HelpPageState extends State<HelpPage> {
                         'Instructions',
                       ),
                       content: const Text(
-                          'Step 1: Turn on the PMCB device.\nStep 2: Turn on Bluetooth from your phone.\nStep 3: Click Connect Device in the Dashboard and find the device to connect.\nStep 4:\nTo Deposit, click on deposit button and wait until you successfully droped all your coins.\nTo Withdraw, click on withdraw button and enter an integer amount.'),
+                          'Step 1: Turn on the PMCB device.\nStep 2: Turn on Bluetooth from your phone.\nStep 3: Click Connect Device and find the device to connect.\nStep 4:\nTo Deposit, click on deposit button and wait until you successfully droped all your coins.\nTo Withdraw, click on withdraw button and enter an integer amount.'),
                       actions: <Widget>[
                         TextButton(
                           style: TextButton.styleFrom(
@@ -82,7 +83,7 @@ class _HelpPageState extends State<HelpPage> {
               borderRadius: BorderRadius.circular(24.0),
               color: Colors.amber.shade100,
             ),
-            child: Column(
+            child: const Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text('Contact Us',

@@ -31,7 +31,7 @@ class _HistoryPageState extends State<HistoryPage> {
               Text('Amount',
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15)),
               VerticalDivider(),
-              const Text('Date',
+              Text('Date',
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15)),
             ]),
       ),

@@ -24,8 +24,7 @@ class _DepositPageState extends State<DepositPage> {
               const Text(
                   'The Bank is open for deposit. \nYou can now drop coins. \n\nClick done afterwards.',
                   textAlign: TextAlign.center,
-                  style: const TextStyle(
-                      fontSize: 20, fontStyle: FontStyle.italic)),
+                  style: TextStyle(fontSize: 20, fontStyle: FontStyle.italic)),
               Container(
                 margin: const EdgeInsets.only(top: 30),
                 child: ElevatedButton(
