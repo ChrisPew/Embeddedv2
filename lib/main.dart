@@ -1,12 +1,12 @@
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
 
-// import './withdraw.dart';
+import './bluetoothController/bluetoothController.dart';
 import './deposit.dart';
 import './help.dart';
 import './history.dart';
+import './withdraw.dart';
 
 void main() {
   runApp(
@@ -37,22 +37,6 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyHome extends State<MyApp> {
-  static BluetoothConnection? connection;
-
-  writeData(data) async {
-    if (connection != null && connection?.isConnected == true) {
-      try {
-        connection?.output.add(Uint8List.fromList(data.codeUnits));
-        await connection?.output.allSent;
-        print('Data sent: $data');
-      } catch (e) {
-        print('Error sending data: $e');
-      }
-    } else {
-      print('Not connected. Cannot send data.');
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -153,11 +137,12 @@ class _MyHome extends State<MyApp> {
                         margin: const EdgeInsets.only(top: 12.0),
                         child: ElevatedButton(
                           onPressed: () {
-                            // Navigator.push(
-                            //     context,
-                            //     MaterialPageRoute(
-                            //         builder: (context) =>
-                            //         const WithdrawPage()));
+                            writeData('w');
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        const WithdrawPage()));
                           },
                           style: ButtonStyle(
                             padding: MaterialStateProperty.all<EdgeInsets>(
@@ -205,5 +190,21 @@ class _MyHome extends State<MyApp> {
         ),
       ),
     );
+  }
+
+  writeData(data) async {
+    if (BluetoothManager.connection != null &&
+        BluetoothManager.connection?.isConnected == true) {
+      try {
+        BluetoothManager.connection?.output
+            .add(Uint8List.fromList(data.codeUnits));
+        await BluetoothManager.connection?.output.allSent;
+        print('Data sent: $data');
+      } catch (e) {
+        print('Error sending data: $e');
+      }
+    } else {
+      print('Not connected. Cannot send data.');
+    }
   }
 }

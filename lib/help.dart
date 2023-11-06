@@ -30,11 +30,15 @@ class _HelpPageState extends State<HelpPage> {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => BluetoothController()));
+                          builder: (context) => BluetoothControl()));
                 });
               },
               child: const Text('Connect to Device'),
             ),
+          ),
+          Text(
+            'Connected? : ${BluetoothManager.connection?.isConnected}',
+            style: TextStyle(fontSize: 20),
           ),
           ElevatedButton(
               style: ButtonStyle(
@@ -52,7 +56,7 @@ class _HelpPageState extends State<HelpPage> {
                         'Instructions',
                       ),
                       content: const Text(
-                          'Step 1: Turn on the PMCB device.\nStep 2: Turn on Bluetooth from your phone.\nStep 3: Click Connect Device and find the device to connect.\nStep 4:\nTo Deposit, click on deposit button and wait until you successfully droped all your coins.\nTo Withdraw, click on withdraw button and enter an integer amount.'),
+                          'Step 1: Turn on the PMCB device.\nStep 2: Turn on Bluetooth from your phone and pair the PMCB device.\nStep 3: Click Connect Device and find the paired device to connect.\nStep 4:\nTo Deposit, click on deposit button and wait until you successfully droped all your coins.\nTo Withdraw, click on withdraw button and enter an integer amount.'),
                       actions: <Widget>[
                         TextButton(
                           style: TextButton.styleFrom(

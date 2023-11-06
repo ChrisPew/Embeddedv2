@@ -1,6 +1,8 @@
 import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
+
 import '../main.dart';
 
 class BluetoothController extends StatelessWidget {
@@ -19,30 +21,8 @@ class BluetoothControl extends StatefulWidget {
 
 class _BluetoothControlState extends State<BluetoothControl> {
   FlutterBluetoothSerial bluetooth = FlutterBluetoothSerial.instance;
-  BluetoothState _bluetoothState = BluetoothState.UNKNOWN;
-  BluetoothDevice? _device;
   bool _isConnected = false;
-  BluetoothConnection? connection;
   List<BluetoothDevice> _devicesList = [];
-
-  void _connectToDevice(BluetoothDevice device) async {
-    if (_isConnected) {
-      // Disconnect from the current device before connecting to a new one if needed.
-      await connection?.finish();
-      setState(() {
-        _isConnected = false;
-      });
-    }
-    try {
-      connection = await BluetoothConnection.toAddress(device.address);
-      setState(() {
-        _isConnected = true;
-        _device = device;
-      });
-    } catch (error) {
-      print('Connection failed: $error');
-    }
-  }
 
   @override
   void initState() {
@@ -85,19 +65,19 @@ class _BluetoothControlState extends State<BluetoothControl> {
                 ),
                 child: const Text('Back')),
             Text(
-              _isConnected ? 'Connected' : 'Not Connected',
+              BluetoothManager.connection?.isConnected == true
+                  ? 'Connected : ${BluetoothManager._device?.name}'
+                  : 'Not Connected',
               style: TextStyle(fontSize: 20),
             ),
             ElevatedButton(
               onPressed: () {
                 _getBondedDevices();
               },
-              child: const Text('check bluetooth'),
+              child: const Text('Show Available Devices'),
             ),
             ElevatedButton(
-              onPressed: () {
-                // _connectToDevice();
-              },
+              onPressed: () {},
               child: Text('Connect to Device'),
             ),
             ElevatedButton(
@@ -122,7 +102,8 @@ class _BluetoothControlState extends State<BluetoothControl> {
                   title: Text(device.name.toString()),
                   subtitle: Text(device.address),
                   onTap: () {
-                    _connectToDevice(device); // Connect to the tappaed device
+                    BluetoothManager.connectToDevice(
+                        device); // Connect to the tapped device
                   },
                 );
               }).toList(),
@@ -134,10 +115,12 @@ class _BluetoothControlState extends State<BluetoothControl> {
   }
 
   writeData(data) async {
-    if (connection != null && connection?.isConnected == true) {
+    if (BluetoothManager.connection != null &&
+        BluetoothManager.connection?.isConnected == true) {
       try {
-        connection?.output.add(Uint8List.fromList(data.codeUnits));
-        await connection?.output.allSent;
+        BluetoothManager.connection?.output
+            .add(Uint8List.fromList(data.codeUnits));
+        await BluetoothManager.connection?.output.allSent;
         print('Data sent: $data');
       } catch (e) {
         print('Error sending data: $e');
@@ -145,5 +128,19 @@ class _BluetoothControlState extends State<BluetoothControl> {
     } else {
       print('Not connected. Cannot send data.');
     }
+  }
+}
+
+class BluetoothManager {
+  static BluetoothConnection? connection;
+  static BluetoothState _bluetoothState = BluetoothState.UNKNOWN;
+  static BluetoothDevice? _device;
+
+  static Future<void> connectToDevice(BluetoothDevice device) async {
+    if (connection != null && connection?.isConnected == true) {
+      await connection?.finish();
+    }
+    connection = await BluetoothConnection.toAddress(device.address);
+    _device = device;
   }
 }
