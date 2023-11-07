@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
@@ -13,6 +14,14 @@ class DepositPage extends StatefulWidget {
 
 class _DepositPageState extends State<DepositPage> {
   static int amountDeposited = 100;
+
+  StreamSubscription<Uint8List>? dataListener;
+
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   readData();
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -43,6 +52,13 @@ class _DepositPageState extends State<DepositPage> {
                     child: const Text('Done')),
               ),
               Text('Total Amount deposited: ${amountDeposited.toString()}'),
+              ElevatedButton(
+                  onPressed: () => {readData(), dispose()},
+                  style: ButtonStyle(
+                    backgroundColor:
+                        MaterialStatePropertyAll<Color>(Colors.amber.shade700),
+                  ),
+                  child: const Text('Done')),
             ],
           ),
         ),
@@ -70,16 +86,29 @@ class _DepositPageState extends State<DepositPage> {
     if (BluetoothManager.connection != null &&
         BluetoothManager.connection?.isConnected == true) {
       try {
-        BluetoothManager.connection?.input?.listen((Uint8List data) {
-          String message = String.fromCharCodes(data);
-          print("Received: $message");
-          amountDeposited = int.parse(message);
-        });
+        if (dataListener == null) {
+          dataListener =
+              BluetoothManager.connection?.input?.listen((Uint8List data) {
+            //   // print('Data incoming: ${ascii.decode(data)}');
+            String message = String.fromCharCodes(data);
+            print("Received: $message");
+            //   amountDeposited = int.parse(message);
+            // Parse and process the data as needed
+          });
+          print('Listening for data');
+        } else {
+          print('Data listener is already set up');
+        }
       } catch (e) {
-        print('Error sending data: $e');
+        print('Error listening data: $e');
       }
     } else {
       print('Not connected. Cannot send data.');
     }
+  }
+
+  void dispose() {
+    dataListener?.cancel();
+    // super.dispose();
   }
 }
