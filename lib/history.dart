@@ -14,11 +14,11 @@ class _HistoryPageState extends State<HistoryPage> {
     return Column(children: [
       Container(
         margin: const EdgeInsets.only(top: 30, bottom: 10),
-        child: const Text('Transaction History',
+        child: Text('Transaction History',
             style: TextStyle(
-              fontSize: 25,
-              fontWeight: FontWeight.bold,
-            )),
+                fontSize: 25,
+                fontWeight: FontWeight.bold,
+                color: Colors.red.shade700)),
       ),
       const Divider(
         height: 30,

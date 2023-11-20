@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
 
 import './bluetoothController/bluetoothController.dart';
 
@@ -13,15 +14,15 @@ class DepositPage extends StatefulWidget {
 }
 
 class _DepositPageState extends State<DepositPage> {
-  static int amountDeposited = 100;
-
+  static String deposited = "";
   StreamSubscription<Uint8List>? dataListener;
+  BluetoothConnection? connection = BluetoothManager.connection;
 
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   readData();
-  // }
+  @override
+  void initState() {
+    super.initState();
+    readData();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -51,14 +52,17 @@ class _DepositPageState extends State<DepositPage> {
                     ),
                     child: const Text('Done')),
               ),
-              Text('Total Amount deposited: ${amountDeposited.toString()}'),
+              Text('Total Amount deposited: ${deposited.toString()}'),
               ElevatedButton(
-                  onPressed: () => {readData(), dispose()},
+                  onPressed: () => {writeData('r'), print(deposited)},
                   style: ButtonStyle(
                     backgroundColor:
                         MaterialStatePropertyAll<Color>(Colors.amber.shade700),
                   ),
-                  child: const Text('Done')),
+                  child: const Text('Read')),
+              Text(connection?.input != null
+                  ? ('connected already')
+                  : ('connection input is empty')),
             ],
           ),
         ),
@@ -67,12 +71,10 @@ class _DepositPageState extends State<DepositPage> {
   }
 
   writeData(data) async {
-    if (BluetoothManager.connection != null &&
-        BluetoothManager.connection?.isConnected == true) {
+    if (connection != null && connection?.isConnected == true) {
       try {
-        BluetoothManager.connection?.output
-            .add(Uint8List.fromList(data.codeUnits));
-        await BluetoothManager.connection?.output.allSent;
+        connection?.output.add(Uint8List.fromList(data.codeUnits));
+        await connection?.output.allSent;
         print('Data sent: $data');
       } catch (e) {
         print('Error sending data: $e');
@@ -83,32 +85,33 @@ class _DepositPageState extends State<DepositPage> {
   }
 
   readData() async {
-    if (BluetoothManager.connection != null &&
-        BluetoothManager.connection?.isConnected == true) {
-      try {
-        if (dataListener == null) {
-          dataListener =
-              BluetoothManager.connection?.input?.listen((Uint8List data) {
-            //   // print('Data incoming: ${ascii.decode(data)}');
-            String message = String.fromCharCodes(data);
-            print("Received: $message");
-            //   amountDeposited = int.parse(message);
-            // Parse and process the data as needed
+    try {
+      dataListener = connection?.input?.listen(
+        (Uint8List data) {
+          String receivedData = String.fromCharCodes(data);
+          setState(() {
+            deposited = receivedData;
           });
-          print('Listening for data');
-        } else {
-          print('Data listener is already set up');
-        }
-      } catch (e) {
-        print('Error listening data: $e');
-      }
-    } else {
-      print('Not connected. Cannot send data.');
+          print("nice");
+          print("deposited: $deposited");
+        },
+        onDone: () {
+          // Handle when the Bluetooth connection is closed
+          print("Bluetooth connection closed");
+        },
+        onError: (error) {
+          // Handle any errors that occur during the listening process
+          print("Error listening for data: $error");
+        },
+      );
+    } catch (e) {
+      print("Error: $e");
     }
-  }
 
-  void dispose() {
-    dataListener?.cancel();
-    // super.dispose();
+    void dispose() {
+      dataListener?.cancel();
+      print('disposed');
+      super.dispose();
+    }
   }
 }
