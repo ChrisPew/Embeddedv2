@@ -33,20 +33,27 @@ class DatabaseHelper {
         conflictAlgorithm: ConflictAlgorithm.replace);
   }
 
-  Future<void> updateData(int newData, String peso) async {
+  Future<void> updateData(
+      int onePeso, int fivePeso, int tenPeso, int twentyPeso) async {
     final Database db = await database;
+
+    // Get the current values of 'p1', 'p5', 'p10', and 'p20' from the database
+    final Map<String, dynamic> currentData = (await db.query(
+      tableName,
+      columns: ['p1', 'p5', 'p10', 'p20'],
+      where: 'id = ?',
+      whereArgs: ['1'],
+    ))
+        .first;
+
+    final int updatedP1 = currentData['p1'] + onePeso;
+    final int updatedP5 = currentData['p5'] + fivePeso;
+    final int updatedP10 = currentData['p10'] + tenPeso;
+    final int updatedP20 = currentData['p20'] + twentyPeso;
+
     await db.update(
       tableName,
-      {
-        if (peso == "p1")
-          'p1': newData
-        else if (peso == "p5")
-          'p5': newData
-        else if (peso == "p10")
-          'p10': newData
-        else if (peso == "p20")
-          'p20': newData
-      },
+      {'p1': updatedP1, 'p5': updatedP5, 'p10': updatedP10, 'p20': updatedP20},
       where: 'id = ?',
       whereArgs: ['1'],
     );

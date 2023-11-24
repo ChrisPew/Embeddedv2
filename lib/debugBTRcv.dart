@@ -44,9 +44,18 @@ class _DebugRcvState extends State<DebugRcv> {
   }
 
   Future<void> fetchData() async {
+    await databaseHelper.updateData(onePeso, fivePeso, tenPeso, twentyPeso);
+
     final data = await databaseHelper.getData();
     setState(() {
       retrievedData = data;
+    });
+
+    setState(() {
+      onePeso = 0;
+      fivePeso = 0;
+      tenPeso = 0;
+      twentyPeso = 0;
     });
   }
 
@@ -114,47 +123,10 @@ class _DebugRcvState extends State<DebugRcv> {
               ElevatedButton(
                   onPressed: () {
                     writeData('0');
-                    setState(() {
-                      onePeso = 0;
-                      fivePeso = 0;
-                      tenPeso = 0;
-                      twentyPeso = 0;
-                    });
                   },
                   child: Text('OFF')),
               Text(
                   '1 Peso: ${onePeso.toString()}\n5 Peso: ${fivePeso.toString()}\n10 Peso: ${tenPeso.toString()}\n20 Peso: ${twentyPeso.toString()}\n'),
-              // ElevatedButton(
-              //   onPressed: () async {
-              //     // Update the age of John Doe in the database
-              //     await databaseHelper.updateAge(30);
-              //     print('Age of John Doe updated in the database.');
-              //   },
-              //   child: Text('Update Age of John Doe'),
-              // )
-              ElevatedButton(
-                  onPressed: () async {
-                    await databaseHelper.updateData(onePeso, "p1");
-                  },
-                  child: Text('P1')),
-
-              ElevatedButton(
-                  onPressed: () async {
-                    await databaseHelper.updateData(fivePeso, "p5");
-                  },
-                  child: Text('P5')),
-
-              ElevatedButton(
-                  onPressed: () async {
-                    await databaseHelper.updateData(tenPeso, "p10");
-                  },
-                  child: Text('P10')),
-
-              ElevatedButton(
-                  onPressed: () async {
-                    await databaseHelper.updateData(twentyPeso, "p20");
-                  },
-                  child: Text('P20')),
               ElevatedButton(
                 onPressed: fetchData,
                 child: Text('Fetch Data'),
