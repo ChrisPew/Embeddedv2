@@ -1,12 +1,11 @@
+import 'package:app1/debugBTRcv.dart';
 import 'package:flutter/material.dart';
-
-import './mainPage.dart';
 
 void main() {
   runApp(
     const MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: MyApp(),
+      home: DebugRcv(),
     ),
   );
 }

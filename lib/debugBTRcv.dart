@@ -1,11 +1,10 @@
-import 'dart:async';
-import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:app1/withdraw.dart';
 import 'package:flutter/material.dart';
 
 import './bluetoothController/bluetoothController.dart';
+import './dbHelper.dart';
 
 class DebugRcv extends StatefulWidget {
   const DebugRcv({super.key});
@@ -16,12 +15,38 @@ class DebugRcv extends StatefulWidget {
 
 class _DebugRcvState extends State<DebugRcv> {
   static String deposited = "";
-  StreamSubscription<Uint8List>? dataListener;
-  Timer? timer;
+  int onePeso = 0;
+  int fivePeso = 0;
+  int tenPeso = 0;
+  int twentyPeso = 0;
+  List<Map<String, dynamic>> retrievedData = [];
+  final DatabaseHelper databaseHelper = DatabaseHelper();
 
-  void startTimer() {
-    timer = Timer.periodic(const Duration(seconds: 2), (Timer t) {
-      _listenToArduino();
+  @override
+  void initState() {
+    super.initState();
+
+    initializeData();
+  }
+
+  Future<void> initializeData() async {
+    // Check if John Doe already exists in the database
+    final List<Map<String, dynamic>> data = await databaseHelper.getData();
+
+    if (data.isEmpty) {
+      await databaseHelper.insertData({
+        'p1': 0,
+        'p5': 0,
+        'p10': 0,
+        'p20': 0,
+      });
+    }
+  }
+
+  Future<void> fetchData() async {
+    final data = await databaseHelper.getData();
+    setState(() {
+      retrievedData = data;
     });
   }
 
@@ -29,32 +54,34 @@ class _DebugRcvState extends State<DebugRcv> {
     if (BluetoothManager.connection != null &&
         BluetoothManager.connection?.isConnected == true) {
       try {
-        // if (dataListener == null) {
-        //   dataListener =
         BluetoothManager.connection!.input!.listen((Uint8List data) {
-          String message = String.fromCharCodes(data);
-          print("Received: $message");
-          // if (message != null) {
-          setState(() {
-            deposited = ascii.decode(data);
-          });
-          print('deposited mo: $deposited');
-          // } else
-          //   print('data null');
+          if (String.fromCharCodes(data).contains('1')) {
+            setState(() {
+              deposited = String.fromCharCodes(data);
+              onePeso++;
+            });
+          } else if (String.fromCharCodes(data).contains('2')) {
+            setState(() {
+              deposited = String.fromCharCodes(data);
+              fivePeso++;
+            });
+          } else if (String.fromCharCodes(data).contains('3')) {
+            setState(() {
+              deposited = String.fromCharCodes(data);
+              tenPeso++;
+            });
+          } else if (String.fromCharCodes(data).contains('4')) {
+            setState(() {
+              deposited = String.fromCharCodes(data);
+              twentyPeso++;
+            });
+          }
         });
-        // } else
-        //   dataListener?.cancel();
       } catch (e) {
         print("Error: $e");
       }
     } else
       print('Not Connected to bluetooth');
-  }
-
-  void stopTimer() {
-    if (timer != null && timer!.isActive) {
-      timer?.cancel();
-    }
   }
 
   @override
@@ -81,16 +108,72 @@ class _DebugRcvState extends State<DebugRcv> {
               ElevatedButton(
                   onPressed: () {
                     writeData('1');
-                    startTimer();
+                    _listenToArduino();
                   },
                   child: Text('ON')),
               ElevatedButton(
                   onPressed: () {
-                    stopTimer();
                     writeData('0');
+                    setState(() {
+                      onePeso = 0;
+                      fivePeso = 0;
+                      tenPeso = 0;
+                      twentyPeso = 0;
+                    });
                   },
                   child: Text('OFF')),
-              Text("Data received: $deposited"),
+              Text(
+                  '1 Peso: ${onePeso.toString()}\n5 Peso: ${fivePeso.toString()}\n10 Peso: ${tenPeso.toString()}\n20 Peso: ${twentyPeso.toString()}\n'),
+              // ElevatedButton(
+              //   onPressed: () async {
+              //     // Update the age of John Doe in the database
+              //     await databaseHelper.updateAge(30);
+              //     print('Age of John Doe updated in the database.');
+              //   },
+              //   child: Text('Update Age of John Doe'),
+              // )
+              ElevatedButton(
+                  onPressed: () async {
+                    await databaseHelper.updateData(onePeso, "p1");
+                  },
+                  child: Text('P1')),
+
+              ElevatedButton(
+                  onPressed: () async {
+                    await databaseHelper.updateData(fivePeso, "p5");
+                  },
+                  child: Text('P5')),
+
+              ElevatedButton(
+                  onPressed: () async {
+                    await databaseHelper.updateData(tenPeso, "p10");
+                  },
+                  child: Text('P10')),
+
+              ElevatedButton(
+                  onPressed: () async {
+                    await databaseHelper.updateData(twentyPeso, "p20");
+                  },
+                  child: Text('P20')),
+              ElevatedButton(
+                onPressed: fetchData,
+                child: Text('Fetch Data'),
+              ),
+              SizedBox(height: 20),
+              if (retrievedData.isNotEmpty)
+                Expanded(
+                  child: ListView.builder(
+                    itemCount: retrievedData.length,
+                    itemBuilder: (context, index) {
+                      final item = retrievedData[index];
+                      return ListTile(
+                        title: Text('Coins Deposited:'),
+                        subtitle: Text(
+                            '1 Pesos: ${item['p1']} \n5 Pesos: ${item['p5']} \n10 Pesos: ${item['p10']} \n20 Pesos: ${item['p20']}'),
+                      );
+                    },
+                  ),
+                ),
             ]),
           ),
         ));
