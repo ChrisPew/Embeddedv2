@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'dbHelper.dart';
+
 class HistoryPage extends StatefulWidget {
   const HistoryPage({Key? key}) : super(key: key);
 
@@ -9,6 +11,20 @@ class HistoryPage extends StatefulWidget {
 
 class _HistoryPageState extends State<HistoryPage> {
   final List<String> entries = <String>['1', '5', '1', '5', '10', '20', '5'];
+  List<Map<String, dynamic>> retrievedData = [];
+  final DatabaseHelper databaseHelper = DatabaseHelper();
+
+  @override
+  void initState() {
+    super.initState();
+    initialize();
+  }
+
+  void initialize() async {
+    final data = await databaseHelper.getHistoryData();
+    // await DatabaseHelper.initDatabase();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(children: [
@@ -55,7 +71,12 @@ class _HistoryPageState extends State<HistoryPage> {
           );
         },
         separatorBuilder: (BuildContext context, int index) => const Divider(),
-      ))
+      )),
+      ElevatedButton(
+          onPressed: () {
+            initialize();
+          },
+          child: const Text('Initialize')),
     ]);
   }
 }
