@@ -41,75 +41,29 @@ class _MyHome extends State<MyApp> {
   }
 
   Future<void> initializeData() async {
-    // Check if John Doe already exists in the database
-    final List<Map<String, dynamic>> data = await databaseHelper.getData();
+    final List<Map<String, dynamic>> coinData =
+        await databaseHelper.getCoinData();
     setState(() {
-      retrievedData = data;
-      balance = retrievedData[0]["p1"] +
-          retrievedData[0]["p5"] +
-          retrievedData[0]["p10"] +
-          retrievedData[0]["p20"];
+      retrievedData = coinData;
+      if (coinData.isEmpty == false) {
+        balance = retrievedData[0]["p1"] +
+            (retrievedData[0]["p5"] * 5) +
+            (retrievedData[0]["p10"] * 10) +
+            (retrievedData[0]["p20"] * 20);
+      }
     });
 
-    if (data.isEmpty) {
-      await databaseHelper.insertData({
+    if (coinData.isEmpty) {
+      await databaseHelper.insertCoinData({
         'p1': 0,
         'p5': 0,
         'p10': 0,
         'p20': 0,
       });
       print('data initialized');
-    }
-    print('data: ${data.toString()}');
-  }
-
-  Future<void> fetchData() async {
-    await databaseHelper.updateData(onePeso, fivePeso, tenPeso, twentyPeso);
-
-    final data = await databaseHelper.getData();
-    setState(() {
-      retrievedData = data;
-    });
-    setState(() {
-      onePeso = 0;
-      fivePeso = 0;
-      tenPeso = 0;
-      twentyPeso = 0;
-    });
-  }
-
-  _listenToArduino() {
-    if (BluetoothManager.connection != null &&
-        BluetoothManager.connection?.isConnected == true) {
-      try {
-        BluetoothManager.connection!.input!.listen((Uint8List data) {
-          if (String.fromCharCodes(data).contains('1')) {
-            setState(() {
-              deposited = String.fromCharCodes(data);
-              onePeso++;
-            });
-          } else if (String.fromCharCodes(data).contains('2')) {
-            setState(() {
-              deposited = String.fromCharCodes(data);
-              fivePeso++;
-            });
-          } else if (String.fromCharCodes(data).contains('3')) {
-            setState(() {
-              deposited = String.fromCharCodes(data);
-              tenPeso++;
-            });
-          } else if (String.fromCharCodes(data).contains('4')) {
-            setState(() {
-              deposited = String.fromCharCodes(data);
-              twentyPeso++;
-            });
-          }
-        });
-      } catch (e) {
-        print("Error: $e");
-      }
     } else
-      print('Not Connected to bluetooth');
+      print('its not empty');
+    print('data: ${coinData.toString()}');
   }
 
   @override
@@ -129,14 +83,28 @@ class _MyHome extends State<MyApp> {
                     children: [
                       Column(
                         children: [
-                          const Text('Current Balance:\n',
+                          Text('Current Balance:\n',
                               style: TextStyle(
-                                  fontSize: 18, color: Colors.redAccent)),
-                          Text('₱${balance.toString()}',
-                              style: TextStyle(
-                                  fontSize: 50,
-                                  fontWeight: FontWeight.w700,
-                                  color: Colors.red.shade700)),
+                                  fontSize: 18,
+                                  color: Colors.redAccent.shade700)),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text('₱${balance.toString()}',
+                                  style: TextStyle(
+                                      fontSize: 50,
+                                      fontWeight: FontWeight.w700,
+                                      color: Colors.red.shade700)),
+                              IconButton(
+                                icon: Icon(Icons.refresh),
+                                color: Colors.redAccent.shade700,
+                                onPressed: () async {
+                                  // Add your reload logic here
+                                  await initializeData();
+                                },
+                              )
+                            ],
+                          ),
                           SizedBox(height: 10),
                           ElevatedButton(
                             style: ButtonStyle(

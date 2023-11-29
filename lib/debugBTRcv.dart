@@ -31,10 +31,10 @@ class _DebugRcvState extends State<DebugRcv> {
 
   Future<void> initializeData() async {
     // Check if John Doe already exists in the database
-    final List<Map<String, dynamic>> data = await databaseHelper.getData();
+    final List<Map<String, dynamic>> data = await databaseHelper.getCoinData();
 
     if (data.isEmpty) {
-      await databaseHelper.insertData({
+      await databaseHelper.insertCoinData({
         'p1': 0,
         'p5': 0,
         'p10': 0,
@@ -46,7 +46,7 @@ class _DebugRcvState extends State<DebugRcv> {
   Future<void> fetchData() async {
     await databaseHelper.updateData(onePeso, fivePeso, tenPeso, twentyPeso);
 
-    final data = await databaseHelper.getData();
+    final data = await databaseHelper.getCoinData();
     setState(() {
       retrievedData = data;
     });
