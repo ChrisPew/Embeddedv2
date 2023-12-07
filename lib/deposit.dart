@@ -115,14 +115,14 @@ class _DepositPageState extends State<DepositPage> {
                 margin: const EdgeInsets.only(top: 30),
                 child: ElevatedButton(
                     onPressed: () async => {
-                          await fetchData(),
-                          await databaseHelper.insertCoinData({
+                          await databaseHelper.insertHistoryData({
                             'totalCoins': onePeso +
                                 (fivePeso * 5) +
                                 (tenPeso * 10) +
                                 (twentyPeso * 20),
                             'date': formattedDate,
                           }),
+                          await fetchData(),
                           writeData('s'),
                           Navigator.of(context).pop()
                         },

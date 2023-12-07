@@ -16,25 +16,27 @@ class DatabaseHelper {
     return _database!;
   }
 
-  static Future<Database> initDatabase() async {
+  Future<Database> initDatabase() async {
     return openDatabase(
-      join(await getDatabasesPath(), 'my_db4.db'),
-      onCreate: (db, version) {
-        return db.execute('''
-        CREATE TABLE $coinTable(
+      join(await getDatabasesPath(), 'my_dataBase.db'),
+      onCreate: (db, version) async {
+        await db.execute('''
+        CREATE TABLE $coinTable (
           id INTEGER PRIMARY KEY,
           p1 INTEGER,
           p5 INTEGER,
           p10 INTEGER,
           p20 INTEGER
-        );
-        
-        CREATE TABLE $historyTable(
+        )
+      ''');
+
+        await db.execute('''
+        CREATE TABLE $historyTable (
           id INTEGER PRIMARY KEY,
           totalCoins INTEGER,
           date TEXT
-        );
-        ''');
+        )
+      ''');
       },
       version: 1,
     );
@@ -54,7 +56,7 @@ class DatabaseHelper {
 
   Future<void> insertHistoryData(Map<String, dynamic> data) async {
     final Database db = await database;
-    await db.insert(coinTable, data,
+    await db.insert(historyTable, data,
         conflictAlgorithm: ConflictAlgorithm.replace);
   }
 
@@ -96,4 +98,24 @@ class DatabaseHelper {
     print('history data fetched');
     return db.query(historyTable);
   }
+}
+
+Future<List<String>> getTablesList(String databaseName) async {
+  Database database = await openDatabase(
+    join(await getDatabasesPath(), databaseName),
+  );
+
+  // Query to get the list of tables in the database
+  List<Map<String, dynamic>> tables = await database.rawQuery(
+    "SELECT name FROM sqlite_master WHERE type='table';",
+  );
+
+  // Extract table names from the result
+  List<String> tableNames =
+      tables.map((table) => table['name'] as String).toList();
+
+  // Close the database
+  await database.close();
+
+  return tableNames;
 }
