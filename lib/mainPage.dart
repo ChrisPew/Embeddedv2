@@ -228,7 +228,7 @@ class _MyHome extends State<MyApp> {
                                   horizontal: 30, vertical: 15)),
                           backgroundColor:
                               const MaterialStatePropertyAll<Color>(
-                                  Colors.amberAccent),
+                                  Colors.amber),
                         ),
                         onPressed: () {
                           writeData('d');
@@ -262,7 +262,7 @@ class _MyHome extends State<MyApp> {
                                     horizontal: 21.5, vertical: 15)),
                             backgroundColor:
                                 const MaterialStatePropertyAll<Color>(
-                                    Colors.orangeAccent),
+                                    Colors.orange),
                           ),
                           child: const Text('Withdraw',
                               style: TextStyle(

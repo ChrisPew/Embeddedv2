@@ -18,13 +18,14 @@ class _DepositPageState extends State<DepositPage> {
   final DatabaseHelper databaseHelper = DatabaseHelper();
   late StreamSubscription<Uint8List> _streamSubscription;
   String deposited = "";
-  static int onePeso = 0;
-  static int fivePeso = 0;
-  static int tenPeso = 0;
-  static int twentyPeso = 0;
+  int onePeso = 0;
+  int fivePeso = 0;
+  int tenPeso = 0;
+  int twentyPeso = 0;
   static DateTime currentDate = DateTime.now();
   String formattedDate =
       "${currentDate.month}/${currentDate.day}/${currentDate.year}";
+
   @override
   void initState() {
     super.initState();
@@ -100,17 +101,45 @@ class _DepositPageState extends State<DepositPage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Text(
+              Text(
                   'The Bank is open for deposit. \nYou can now drop coins. \n\nClick done afterwards.',
                   textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 20, fontStyle: FontStyle.italic)),
-              Text('\n\nDate: $formattedDate'),
-              const Text('Amount Deposited:'),
+                  style: TextStyle(
+                      fontSize: 20,
+                      fontStyle: FontStyle.italic,
+                      color: Colors.amber.shade900)),
+              const Divider(
+                  height: 40, endIndent: 120, indent: 120, color: Colors.amber),
+              Text('Date: $formattedDate',
+                  style:
+                      TextStyle(fontSize: 20, color: Colors.orange.shade900)),
+              const Divider(
+                  height: 40, endIndent: 120, indent: 120, color: Colors.amber),
+              Text('You have deposited:',
+                  style: TextStyle(fontSize: 18, color: Colors.amber.shade900)),
+              const SizedBox(height: 20),
+              Container(
+                width: 150,
+                height: 140,
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                  color: Colors.amber.shade800,
+                  borderRadius:
+                      BorderRadius.circular(15), // Button border radius
+                ),
+                child: Text(
+                    '1 Peso: ${onePeso.toString()}\n5 Peso: ${fivePeso.toString()}\n10 Peso: ${tenPeso.toString()}\n20 Peso: ${twentyPeso.toString()}',
+                    style: const TextStyle(
+                        fontStyle: FontStyle.italic,
+                        fontSize: 20,
+                        color: Colors.white)),
+              ),
               Text(
-                  '1 Peso: ${onePeso.toString()}\n5 Peso: ${fivePeso.toString()}\n10 Peso: ${tenPeso.toString()}\n20 Peso: ${twentyPeso.toString()}'),
-              Text(
-                  style: const TextStyle(fontWeight: FontWeight.bold),
-                  '\nTotal: ${(onePeso + (fivePeso * 5) + (tenPeso * 10) + (twentyPeso * 20)).toString()}'),
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 25,
+                      color: Colors.amber.shade900),
+                  '\nTotal: ₱${(onePeso + (fivePeso * 5) + (tenPeso * 10) + (twentyPeso * 20)).toString()}'),
               Container(
                 margin: const EdgeInsets.only(top: 30),
                 child: ElevatedButton(
@@ -126,9 +155,9 @@ class _DepositPageState extends State<DepositPage> {
                           writeData('s'),
                           Navigator.of(context).pop()
                         },
-                    style: ButtonStyle(
-                      backgroundColor: MaterialStatePropertyAll<Color>(
-                          Colors.amber.shade700),
+                    style: const ButtonStyle(
+                      backgroundColor:
+                          MaterialStatePropertyAll<Color>(Colors.amber),
                     ),
                     child: const Text('Done')),
               ),

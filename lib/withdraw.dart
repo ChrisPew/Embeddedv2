@@ -3,6 +3,7 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 
 import './bluetoothController/bluetoothController.dart';
+import 'dbHelper.dart';
 
 class WithdrawPage extends StatefulWidget {
   const WithdrawPage({Key? key}) : super(key: key);
@@ -14,6 +15,15 @@ class WithdrawPage extends StatefulWidget {
 class _WithdrawPageState extends State<WithdrawPage> {
   final myController = TextEditingController(); // Define the text controller
   // static int withdrawAmt=int.parse(myController.text);
+  int totalAmount = 0;
+  int onePeso = 0;
+  int fivePeso = 0;
+  int tenPeso = 0;
+  int twentyPeso = 0;
+  final DatabaseHelper databaseHelper = DatabaseHelper();
+  static DateTime currentDate = DateTime.now();
+  String formattedDate =
+      "${currentDate.month}/${currentDate.day}/${currentDate.year}";
 
   @override
   void dispose() {
@@ -34,77 +44,118 @@ class _WithdrawPageState extends State<WithdrawPage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Text('Withdraw Amount:'),
-              Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                Container(
-                  decoration: BoxDecoration(
-                    color: Colors.blue,
-                    borderRadius:
-                        BorderRadius.circular(50), // Button border radius
-                  ),
-                  child: TextButton(
-                    onPressed: () {
-                      writeData('z');
-                    },
-                    child: const Text(
-                      '1',
-                      style: TextStyle(color: Colors.white),
+              const Text(
+                'Withdraw Amount:',
+                style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 30,
+                    color: Colors.orange),
+              ),
+              const SizedBox(height: 30),
+              Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Container(
+                      decoration: BoxDecoration(
+                        color: Colors.orange.shade700,
+                        borderRadius:
+                            BorderRadius.circular(50), // Button border radius
+                      ),
+                      child: TextButton(
+                        onPressed: () {
+                          writeData('c');
+                        },
+                        child: const Text(
+                          '1',
+                          style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white),
+                        ),
+                      ),
                     ),
-                  ),
-                ),
-                Container(
-                  decoration: BoxDecoration(
-                    color: Colors.blue,
-                    borderRadius:
-                        BorderRadius.circular(50), // Button border radius
-                  ),
-                  child: TextButton(
-                    onPressed: () {
-                      writeData('x');
-                    },
-                    child: const Text(
-                      '5',
-                      style: TextStyle(color: Colors.white),
+                    const SizedBox(
+                      width: 18,
                     ),
-                  ),
-                ),
-                Container(
-                  decoration: BoxDecoration(
-                    color: Colors.blue,
-                    borderRadius:
-                        BorderRadius.circular(50), // Button border radius
-                  ),
-                  child: TextButton(
-                    onPressed: () {
-                      writeData('c');
-                    },
-                    child: const Text(
-                      '10',
-                      style: TextStyle(color: Colors.white),
+                    VerticalDivider(width: 30),
+                    InkWell(
+                      onTap: () {
+                        setState(() {
+                          onePeso++;
+                          totalAmount =
+                              onePeso + fivePeso + tenPeso + twentyPeso;
+                        });
+                      },
+                      child: const Icon(
+                        Icons.add,
+                        size: 35,
+                        color: Colors.orange,
+                      ),
                     ),
-                  ),
-                ),
-                Container(
-                  decoration: BoxDecoration(
-                    color: Colors.blue,
-                    borderRadius:
-                        BorderRadius.circular(50), // Button border radius
-                  ),
-                  child: TextButton(
-                    onPressed: () {
-                      writeData('v');
-                    },
-                    child: const Text(
-                      '20',
-                      style: TextStyle(color: Colors.white),
+                    const SizedBox(
+                      width: 18,
                     ),
-                  ),
-                ),
-              ]),
+                    Text(
+                      onePeso.toString(),
+                      style: TextStyle(
+                          fontSize: 16,
+                          fontStyle: FontStyle.italic,
+                          color: Colors.orange.shade900),
+                    ),
+                    const SizedBox(
+                      width: 18,
+                    ),
+                    InkWell(
+                      onTap: () {
+                        if (onePeso > 0) {
+                          setState(() {
+                            onePeso--;
+                            totalAmount =
+                                onePeso + fivePeso + tenPeso + twentyPeso;
+                          });
+                        }
+                      },
+                      child: const Icon(
+                        Icons.remove,
+                        size: 35,
+                        color: Colors.red,
+                      ),
+                    ),
+                  ]),
+              const SizedBox(height: 30),
+              Text(
+                'Total amount: $totalAmount',
+                style: TextStyle(
+                    fontSize: 16,
+                    fontStyle: FontStyle.italic,
+                    color: Colors.orange.shade900),
+              ),
+              const SizedBox(height: 10),
               ElevatedButton(
-                  style: ButtonStyle(
-                      backgroundColor: MaterialStatePropertyAll<Color>(
-                          Colors.orange.shade900)),
+                  style: const ButtonStyle(
+                      backgroundColor:
+                          MaterialStatePropertyAll<Color>(Colors.orange)),
+                  onPressed: () async => {
+                        await databaseHelper.insertHistoryData({
+                          'totalCoins': -totalAmount,
+                          'date': formattedDate,
+                        }),
+                        await databaseHelper.updateData(
+                            -onePeso, -fivePeso, -tenPeso, -twentyPeso),
+                        writeData('s'),
+                        Navigator.of(context).pop()
+                      },
+                  child: const Text(
+                    'Withdraw',
+                    style: TextStyle(
+                      fontSize: 20,
+                    ),
+                  )),
+              ElevatedButton(
+                  style: const ButtonStyle(
+                      backgroundColor:
+                          MaterialStatePropertyAll<Color>(Colors.orangeAccent)),
                   onPressed: () =>
                       {writeData('s'), Navigator.of(context).pop()},
                   child: const Text('Back')),
