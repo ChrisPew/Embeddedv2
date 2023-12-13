@@ -16,7 +16,7 @@ class DepositPage extends StatefulWidget {
 class _DepositPageState extends State<DepositPage> {
   List<Map<String, dynamic>> retrievedData = [];
   final DatabaseHelper databaseHelper = DatabaseHelper();
-  late StreamSubscription<Uint8List> _streamSubscription;
+  // late StreamSubscription<Uint8List> _streamSubscription;
   String deposited = "";
   int onePeso = 0;
   int fivePeso = 0;
@@ -34,7 +34,7 @@ class _DepositPageState extends State<DepositPage> {
 
   @override
   void dispose() {
-    _streamSubscription.cancel();
+    // _streamSubscription.cancel();
     super.dispose();
   }
 
@@ -42,24 +42,24 @@ class _DepositPageState extends State<DepositPage> {
     if (BluetoothManager.connection != null &&
         BluetoothManager.connection?.isConnected == true) {
       try {
-        _streamSubscription =
-            BluetoothManager.connection!.input!.listen((Uint8List data) {
-          if (String.fromCharCodes(data).contains('1')) {
+        // _streamSubscription =
+        BluetoothManager.connection!.input!.listen((Uint8List data) {
+          if (String.fromCharCodes(data).contains('1') && mounted) {
             setState(() {
               deposited = String.fromCharCodes(data);
               onePeso++;
             });
-          } else if (String.fromCharCodes(data).contains('2')) {
+          } else if (String.fromCharCodes(data).contains('2') && mounted) {
             setState(() {
               deposited = String.fromCharCodes(data);
               fivePeso++;
             });
-          } else if (String.fromCharCodes(data).contains('3')) {
+          } else if (String.fromCharCodes(data).contains('3') && mounted) {
             setState(() {
               deposited = String.fromCharCodes(data);
               tenPeso++;
             });
-          } else if (String.fromCharCodes(data).contains('4')) {
+          } else if (String.fromCharCodes(data).contains('4') && mounted) {
             setState(() {
               deposited = String.fromCharCodes(data);
               twentyPeso++;
