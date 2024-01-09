@@ -23,7 +23,7 @@ class _HelpPageState extends State<HelpPage> {
                 padding: MaterialStateProperty.all<EdgeInsets>(
                     const EdgeInsets.symmetric(horizontal: 30, vertical: 17)),
                 backgroundColor:
-                    const MaterialStatePropertyAll<Color>(Colors.blue),
+                    const MaterialStatePropertyAll<Color>(Colors.red),
               ),
               onPressed: () {
                 setState(() {
@@ -39,9 +39,9 @@ class _HelpPageState extends State<HelpPage> {
           ElevatedButton(
               style: ButtonStyle(
                 padding: MaterialStateProperty.all<EdgeInsets>(
-                    const EdgeInsets.symmetric(horizontal: 30, vertical: 17)),
+                    const EdgeInsets.symmetric(horizontal: 35, vertical: 15)),
                 backgroundColor:
-                    MaterialStatePropertyAll<Color>(Colors.red.shade600),
+                    MaterialStatePropertyAll<Color>(Colors.redAccent),
               ),
               onPressed: () {
                 showDialog(
@@ -78,7 +78,7 @@ class _HelpPageState extends State<HelpPage> {
             width: 330,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(24.0),
-              color: Colors.amber.shade100,
+              color: Colors.red.shade50,
             ),
             child: const Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -90,7 +90,7 @@ class _HelpPageState extends State<HelpPage> {
                   height: 40,
                 ),
                 Text(
-                  'Email: christopherespenida@gmail.com\n\nPhone: 09274478615',
+                  'Email: TeamGroup2.noreply@gmail.com\n\nPhone: 09921234567',
                   style: TextStyle(fontStyle: FontStyle.italic),
                 )
               ],

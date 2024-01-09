@@ -99,36 +99,36 @@ class _HistoryPageState extends State<HistoryPage> {
                   itemCount: snapshot.data!.length,
                   itemBuilder: (context, index) {
                     var data = snapshot.data![index];
-                    return Container(
-                      child: Column(children: [
-                        Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              Text('₱ ${data['totalCoins']}',
-                                  style: TextStyle(
-                                      color: Colors.red.shade900,
-                                      fontSize: 20)),
-                              // const VerticalDivider(),
-                              Text('${data['date']}',
-                                  style: TextStyle(
-                                      color: Colors.red.shade900,
-                                      fontSize: 18)),
-                            ]),
-                        Divider(
-                          height: 40,
-                          indent: 70,
-                          endIndent: 70,
-                          color: Colors.redAccent.shade100,
+                    if (data['totalCoins'] != 0) {
+                      return Container(
+                        child: Column(
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                Text('₱ ${data['totalCoins']}',
+                                    style: TextStyle(
+                                        color: Colors.red.shade900,
+                                        fontSize: 20)),
+                                Text('${data['date']}',
+                                    style: TextStyle(
+                                        color: Colors.red.shade900,
+                                        fontSize: 18)),
+                              ],
+                            ),
+                            Divider(
+                              height: 40,
+                              indent: 70,
+                              endIndent: 70,
+                              color: Colors.redAccent.shade100,
+                            ),
+                          ],
                         ),
-                      ]),
-                    );
-                    //   Column(
-                    //   children: [
-                    //     Text('Total Coins: ${data['totalCoins']}'),
-                    //     Text('Date: ${data['date']}'),
-                    //     SizedBox(height: 16),
-                    //   ],
-                    // );
+                      );
+                    } else {
+                      // Return an empty container or null for cases where totalCoins is 0
+                      return Container();
+                    }
                   },
                 );
               }

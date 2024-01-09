@@ -65,6 +65,13 @@ class _WithdrawPageState extends State<WithdrawPage> {
                       child: TextButton(
                         onPressed: () {
                           writeData('z');
+                          setState(() {
+                            onePeso++;
+                            totalAmount = onePeso +
+                                fivePeso * 5 +
+                                tenPeso * 10 +
+                                twentyPeso * 20;
+                          });
                         },
                         child: const Text(
                           '1',
@@ -79,48 +86,12 @@ class _WithdrawPageState extends State<WithdrawPage> {
                       width: 18,
                     ),
                     VerticalDivider(width: 30),
-                    InkWell(
-                      onTap: () {
-                        setState(() {
-                          onePeso++;
-                          totalAmount =
-                              onePeso + fivePeso + tenPeso + twentyPeso;
-                        });
-                      },
-                      child: const Icon(
-                        Icons.add,
-                        size: 35,
-                        color: Colors.orange,
-                      ),
-                    ),
-                    const SizedBox(
-                      width: 18,
-                    ),
                     Text(
                       onePeso.toString(),
                       style: TextStyle(
                           fontSize: 16,
                           fontStyle: FontStyle.italic,
                           color: Colors.orange.shade900),
-                    ),
-                    const SizedBox(
-                      width: 18,
-                    ),
-                    InkWell(
-                      onTap: () {
-                        if (onePeso > 0) {
-                          setState(() {
-                            onePeso--;
-                            totalAmount =
-                                onePeso + fivePeso + tenPeso + twentyPeso;
-                          });
-                        }
-                      },
-                      child: const Icon(
-                        Icons.remove,
-                        size: 35,
-                        color: Colors.red,
-                      ),
                     ),
                   ]),
               const SizedBox(height: 20),
@@ -137,6 +108,13 @@ class _WithdrawPageState extends State<WithdrawPage> {
                       child: TextButton(
                         onPressed: () {
                           writeData('x');
+                          setState(() {
+                            fivePeso++;
+                            totalAmount = onePeso +
+                                fivePeso * 5 +
+                                tenPeso * 10 +
+                                twentyPeso * 20;
+                          });
                         },
                         child: const Text(
                           '5',
@@ -151,48 +129,12 @@ class _WithdrawPageState extends State<WithdrawPage> {
                       width: 18,
                     ),
                     VerticalDivider(width: 30),
-                    InkWell(
-                      onTap: () {
-                        setState(() {
-                          fivePeso++;
-                          totalAmount =
-                              onePeso + fivePeso + tenPeso + twentyPeso;
-                        });
-                      },
-                      child: const Icon(
-                        Icons.add,
-                        size: 35,
-                        color: Colors.orange,
-                      ),
-                    ),
-                    const SizedBox(
-                      width: 18,
-                    ),
                     Text(
                       fivePeso.toString(),
                       style: TextStyle(
                           fontSize: 16,
                           fontStyle: FontStyle.italic,
                           color: Colors.orange.shade900),
-                    ),
-                    const SizedBox(
-                      width: 18,
-                    ),
-                    InkWell(
-                      onTap: () {
-                        if (fivePeso > 0) {
-                          setState(() {
-                            fivePeso--;
-                            totalAmount =
-                                onePeso + fivePeso + tenPeso + twentyPeso;
-                          });
-                        }
-                      },
-                      child: const Icon(
-                        Icons.remove,
-                        size: 35,
-                        color: Colors.red,
-                      ),
                     ),
                   ]),
               const SizedBox(height: 20),
@@ -209,6 +151,13 @@ class _WithdrawPageState extends State<WithdrawPage> {
                       child: TextButton(
                         onPressed: () {
                           writeData('c');
+                          setState(() {
+                            tenPeso++;
+                            totalAmount = onePeso +
+                                fivePeso * 5 +
+                                tenPeso * 10 +
+                                twentyPeso * 20;
+                          });
                         },
                         child: const Text(
                           '10',
@@ -223,48 +172,12 @@ class _WithdrawPageState extends State<WithdrawPage> {
                       width: 18,
                     ),
                     VerticalDivider(width: 30),
-                    InkWell(
-                      onTap: () {
-                        setState(() {
-                          tenPeso++;
-                          totalAmount =
-                              onePeso + fivePeso + tenPeso + twentyPeso;
-                        });
-                      },
-                      child: const Icon(
-                        Icons.add,
-                        size: 35,
-                        color: Colors.orange,
-                      ),
-                    ),
-                    const SizedBox(
-                      width: 18,
-                    ),
                     Text(
                       tenPeso.toString(),
                       style: TextStyle(
                           fontSize: 16,
                           fontStyle: FontStyle.italic,
                           color: Colors.orange.shade900),
-                    ),
-                    const SizedBox(
-                      width: 18,
-                    ),
-                    InkWell(
-                      onTap: () {
-                        if (tenPeso > 0) {
-                          setState(() {
-                            tenPeso--;
-                            totalAmount =
-                                onePeso + fivePeso + tenPeso + twentyPeso;
-                          });
-                        }
-                      },
-                      child: const Icon(
-                        Icons.remove,
-                        size: 35,
-                        color: Colors.red,
-                      ),
                     ),
                   ]),
               const SizedBox(height: 20),
@@ -281,6 +194,13 @@ class _WithdrawPageState extends State<WithdrawPage> {
                       child: TextButton(
                         onPressed: () {
                           writeData('v');
+                          setState(() {
+                            twentyPeso++;
+                            totalAmount = onePeso +
+                                fivePeso * 5 +
+                                tenPeso * 10 +
+                                twentyPeso * 20;
+                          });
                         },
                         child: const Text(
                           '20',
@@ -295,23 +215,6 @@ class _WithdrawPageState extends State<WithdrawPage> {
                       width: 18,
                     ),
                     VerticalDivider(width: 30),
-                    InkWell(
-                      onTap: () {
-                        setState(() {
-                          twentyPeso++;
-                          totalAmount =
-                              onePeso + fivePeso + tenPeso + twentyPeso;
-                        });
-                      },
-                      child: const Icon(
-                        Icons.add,
-                        size: 35,
-                        color: Colors.orange,
-                      ),
-                    ),
-                    const SizedBox(
-                      width: 18,
-                    ),
                     Text(
                       twentyPeso.toString(),
                       style: TextStyle(
@@ -319,26 +222,8 @@ class _WithdrawPageState extends State<WithdrawPage> {
                           fontStyle: FontStyle.italic,
                           color: Colors.orange.shade900),
                     ),
-                    const SizedBox(
-                      width: 18,
-                    ),
-                    InkWell(
-                      onTap: () {
-                        if (twentyPeso > 0) {
-                          setState(() {
-                            twentyPeso--;
-                            totalAmount =
-                                onePeso + fivePeso + tenPeso + twentyPeso;
-                          });
-                        }
-                      },
-                      child: const Icon(
-                        Icons.remove,
-                        size: 35,
-                        color: Colors.red,
-                      ),
-                    ),
                   ]),
+              const SizedBox(height: 20),
               const SizedBox(height: 30),
               Text(
                 'Total amount: $totalAmount',
@@ -368,13 +253,13 @@ class _WithdrawPageState extends State<WithdrawPage> {
                       fontSize: 20,
                     ),
                   )),
-              ElevatedButton(
-                  style: const ButtonStyle(
-                      backgroundColor:
-                          MaterialStatePropertyAll<Color>(Colors.orangeAccent)),
-                  onPressed: () =>
-                      {writeData('s'), Navigator.of(context).pop()},
-                  child: const Text('Back')),
+              // ElevatedButton(
+              //     style: const ButtonStyle(
+              //         backgroundColor:
+              //             MaterialStatePropertyAll<Color>(Colors.orangeAccent)),
+              //     onPressed: () =>
+              //         {writeData('s'), Navigator.of(context).pop()},
+              //     child: const Text('Back')),
             ],
           ),
         ),

@@ -130,11 +130,10 @@ class _MyHome extends State<MyApp> {
                                               '\n1 Pesos: ${retrievedData[0]["p1"]}',
                                               style: TextStyle(
                                                 fontSize: 19,
-                                                color: retrievedData[0]
-                                                            ["p20"] >=
-                                                        20
-                                                    ? Colors.red.shade900
-                                                    : Colors.amber.shade900,
+                                                color:
+                                                    retrievedData[0]["p1"] >= 50
+                                                        ? Colors.red.shade900
+                                                        : Colors.amber.shade900,
                                                 fontWeight: FontWeight.w700,
                                                 fontStyle: FontStyle.italic,
                                               )),
@@ -147,11 +146,10 @@ class _MyHome extends State<MyApp> {
                                               '5 Pesos: ${retrievedData[0]["p5"]}',
                                               style: TextStyle(
                                                 fontSize: 19,
-                                                color: retrievedData[0]
-                                                            ["p20"] >=
-                                                        20
-                                                    ? Colors.red.shade800
-                                                    : Colors.amber.shade900,
+                                                color:
+                                                    retrievedData[0]["p5"] >= 50
+                                                        ? Colors.red.shade800
+                                                        : Colors.amber.shade900,
                                                 fontWeight: FontWeight.w700,
                                                 fontStyle: FontStyle.italic,
                                               )),
@@ -166,7 +164,7 @@ class _MyHome extends State<MyApp> {
                                                 fontSize: 19,
                                                 color: retrievedData[0]
                                                             ["p10"] >=
-                                                        20
+                                                        50
                                                     ? Colors.red.shade800
                                                     : Colors.amber.shade900,
                                                 fontWeight: FontWeight.w700,
@@ -183,7 +181,7 @@ class _MyHome extends State<MyApp> {
                                                 fontSize: 19,
                                                 color: retrievedData[0]
                                                             ["p20"] >=
-                                                        20
+                                                        50
                                                     ? Colors.red.shade800
                                                     : Colors.amber.shade900,
                                                 fontWeight: FontWeight.w700,
@@ -231,13 +229,26 @@ class _MyHome extends State<MyApp> {
                                   Colors.amber),
                         ),
                         onPressed: () {
-                          writeData('d');
-                          setState(() {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => const DepositPage()));
-                          });
+                          if (BluetoothManager.connection != null &&
+                              BluetoothManager.connection?.isConnected ==
+                                  true) {
+                            writeData('d');
+                            setState(() {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          const DepositPage()));
+                            });
+                          } else {
+                            setState(() {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          BluetoothController()));
+                            });
+                          }
                         },
                         child: const Text('Deposit',
                             style: TextStyle(
@@ -249,12 +260,24 @@ class _MyHome extends State<MyApp> {
                         margin: const EdgeInsets.only(top: 12.0),
                         child: ElevatedButton(
                           onPressed: () {
-                            writeData('w');
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        const WithdrawPage()));
+                            if (BluetoothManager.connection != null &&
+                                BluetoothManager.connection?.isConnected ==
+                                    true) {
+                              writeData('w');
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          const WithdrawPage()));
+                            } else {
+                              setState(() {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            BluetoothController()));
+                              });
+                            }
                           },
                           style: ButtonStyle(
                             padding: MaterialStateProperty.all<EdgeInsets>(
